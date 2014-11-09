@@ -2,7 +2,8 @@
   :description "Implementation of the Voted Perceptron algorithm used to learn digits."
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [incanter/incanter-core "1.5.5"] ]
+                 [amalloy/ring-buffer "1.0"]
+                 [incanter/incanter-core "1.5.5"]]
 
   :main ^:skip-aot voted-perceptron.core
   :target-path "target/%s"
