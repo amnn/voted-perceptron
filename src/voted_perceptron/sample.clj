@@ -5,17 +5,29 @@
   (str dir "/digit" n ".txt"))
 
 (defn parse-line [digit line]
-  [digit (read-string (str \[ line \]))])
+  [(read-string (str \[ line \])) digit])
 
-(defn- read-digit-sample [dir digit]
+(defn- read-chunked-digit-sample [n dir digit]
   (with-open [file (reader (f-name dir digit))]
     (->> file line-seq
          (map (partial parse-line
                        digit))
+         (partition n)
          doall)))
 
 (defn samples
-  "Take a directory, `dir`, and read a sample in contained in that directory."
-  [dir]
-  (shuffle (mapcat (partial read-digit-sample dir)
-                   (range 10))))
+  "Take a directory, `dir`, and read a sample contained in that directory into
+  `n` chunks."
+  [n dir]
+  (->> (range 10)
+       (map #(read-chunked-digit-sample n dir %))
+       (apply map concat)
+       vec))
+
+(defn pick-test-set [ts samples]
+  {:test  (samples ts)
+   :train (lazy-seq
+            (apply concat
+                   (keep-indexed
+                     #(when (not= % ts) %2)
+                     samples)))})
