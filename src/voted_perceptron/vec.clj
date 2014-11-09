@@ -12,3 +12,6 @@
   "scalar/vector multiplication"
   [sf xs] (map #(* sf %) xs))
 
+(defn v-avg
+  "Take the average of the collection of vectors"
+  [xs] (s* (/ 1.0 (count xs)) (reduce v+ xs)))
