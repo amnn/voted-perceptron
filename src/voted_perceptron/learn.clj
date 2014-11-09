@@ -23,10 +23,9 @@
   "Given the normal to the current linear separator `w`, and the next sample
   point and its label, return an updated normal."
   [w [x y*]]
-  (let [y (classify* w x)]
-    (if (= y y*)
-      w
-      (v+ w (s* y* x)))))
+  (if (= (classify* w x) y*)
+    w
+    (v+ w (s* y* x))))
 
 (defn- update-separators
   "Given the normal to the last linear separator `last-w`, the queue of
